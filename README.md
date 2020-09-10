@@ -1,5 +1,6 @@
 ## tty0tty - linux null modem emulator
 
+Originally forked from: https://github.com/freemed/tty0tty
 
 ### tty0tty directory tree:
 
@@ -20,8 +21,7 @@ the connection is:
 
 #### module:
 
-The module is tested in kernel 4.19.0-10-amd64 (debian).
-When loaded, it creates 10 ttys interconnected (5 pairs):
+The module is tested in kernel 4.19.0-10-amd64 (debian). When loaded, it creates 10 ttys interconnected (5 pairs):
 
 ```bash
   /dev/tnt0  <=>  /dev/tnt1 
