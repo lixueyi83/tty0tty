@@ -4,44 +4,50 @@ Originally forked from: https://github.com/freemed/tty0tty
 
 ### tty0tty directory tree:
 
-- module    :linux kernel module null-modem
-- pts	    :null-modem using ptys (without handshake lines)
+```bash
+    module    :linux kernel module null-modem
+    pts	    :null-modem using ptys (without handshake lines)
+```
 
 
 #### pts(unix98): 
 
 When run connect two pseudo-ttys and show the connection names:
 
-(/dev/pts/1) <=> (/dev/pts/2) 
-
-the connection is:
-  
-- TX -> RX
-- RX <- TX 	
-
-#### module:
-
-The module is tested in kernel 4.19.0-10-amd64 (debian). When loaded, it creates 10 ttys interconnected (5 pairs):
-
 ```bash
-  /dev/tnt0  <=>  /dev/tnt1 
-  /dev/tnt2  <=>  /dev/tnt3 
-  /dev/tnt4  <=>  /dev/tnt5 
-  /dev/tnt6  <=>  /dev/tnt7 
-  /dev/tnt8  <=>  /dev/tnt9 
+    (/dev/pts/1) <=> (/dev/pts/2) 
 ```
 
 The connection is:
+  
+```bash
+    TX -> RX
+    RX <- TX 	
+```
+
+#### module:
+
+- The module is tested in kernel 4.19.0-10-amd64 (debian). When loaded, it creates 10 ttys interconnected (5 pairs):
 
 ```bash
-  TX   ->  RX
-  RX   <-  TX 	
-  RTS  ->  CTS
-  CTS  <-  RTS
-  DSR  <-  DTR
-  CD   <-  DTR
-  DTR  ->  DSR
-  DTR  ->  CD
+    /dev/tnt0  <=>  /dev/tnt1 
+    /dev/tnt2  <=>  /dev/tnt3 
+    /dev/tnt4  <=>  /dev/tnt5 
+    /dev/tnt6  <=>  /dev/tnt7 
+    /dev/tnt8  <=>  /dev/tnt9 
+```
+
+- The connection is:
+
+```bash
+    TX   ->  RX
+    RX   <-  TX 	
+    RTS  ->  CTS
+    CTS  <-  RTS
+    DSR  <-  DTR
+    CD   <-  DTR
+    DTR  ->  DSR
+    DTR  ->  CD
 ```
   
 ### Compile Requirements:
@@ -58,12 +64,18 @@ kernel-headers or kernel source is reqired, run following command to install:
 ### Compile/Build
 
 - cd pts:
-    - make        :to compile 
-    - ./tty0tty   :to run 	
+
+```bash
+    make        :to compile 
+    ./tty0tty   :to run 	
+```
 
 - cd module:
-    - make        	    :to compile 
-    - insmod tty0tty.ko :to load module (using root or sudo)	
+
+```bash
+    make        	        :to compile 
+    insmod tty0tty.ko       :to load module (using root or sudo)	
+```
 
 ### Install
 
