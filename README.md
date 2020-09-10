@@ -1,121 +1,111 @@
-
-# tty0tty - linux null modem emulator v1.2 
-
-
-The tty0tty directory tree is divided in:
-
-  **module** - linux kernel module null-modem  
-  **pts** - null-modem using ptys (without handshake lines)
+## tty0tty - linux null modem emulator
 
 
-## Null modem pts (unix98): 
+### tty0tty directory tree:
 
-  When run connect two pseudo-ttys and show the connection names:
+- module    :linux kernel module null-modem
+- pts	    :null-modem using ptys (without handshake lines)
+
+
+#### pts(unix98): 
+
+When run connect two pseudo-ttys and show the connection names:
+
+(/dev/pts/1) <=> (/dev/pts/2) 
+
+the connection is:
   
-  (/dev/pts/1) <=> (/dev/pts/2)  
+- TX -> RX
+- RX <- TX 	
 
-  the connection is:
+#### module:
+
+The module is tested in kernel 4.19.0-10-amd64 (debian).
+When loaded, it creates 10 ttys interconnected (5 pairs):
+
+```bash
+  /dev/tnt0  <=>  /dev/tnt1 
+  /dev/tnt2  <=>  /dev/tnt3 
+  /dev/tnt4  <=>  /dev/tnt5 
+  /dev/tnt6  <=>  /dev/tnt7 
+  /dev/tnt8  <=>  /dev/tnt9 
+```
+
+The connection is:
+
+```bash
+  TX   ->  RX
+  RX   <-  TX 	
+  RTS  ->  CTS
+  CTS  <-  RTS
+  DSR  <-  DTR
+  CD   <-  DTR
+  DTR  ->  DSR
+  DTR  ->  CD
+```
   
-  TX -> RX  
-  RX <- TX  
+### Compile Requirements:
 
+kernel-headers or kernel source is reqired, run following command to install:
 
-
-## Module:
-
- The module is tested in kernel 3.10.2 (debian) 
-
-  When loaded, create 8 ttys interconnected:
-  
-  /dev/tnt0  <=>  /dev/tnt1  
-  /dev/tnt2  <=>  /dev/tnt3  
-  /dev/tnt4  <=>  /dev/tnt5  
-  /dev/tnt6  <=>  /dev/tnt7  
-
-  the connection is:
-  
-  TX   ->  RX  
-  RX   <-  TX  
-  RTS  ->  CTS  
-  CTS  <-  RTS  
-  DSR  <-  DTR  
-  CD   <-  DTR  
-  DTR  ->  DSR  
-  DTR  ->  CD  
-  
-
-## Requirements:
-
-  For building the module kernel-headers or kernel source are necessary.
-
-## Installation:
-
-Download the tty0tty package from one of these sources:
-Clone the repo https://github.com/freemed/tty0tty
-
-```
-git clone https://github.com/freemed/tty0tty
+```bash
+    # to search using $ apt-cache search linux-headers
+    $ sudo apt-get install linux-headers-$(uname -r)
 ```
 
-Extract it
+- then go to ./pts and ./module separately to run `make` to build
 
-```
-tar xf tty0tty-1.2.tgz
-```
+### Compile/Build
 
-Build the kernel module from provided source
+- cd pts:
+    - make        :to compile 
+    - ./tty0tty   :to run 	
 
-```
-cd tty0tty-1.2/module
-make
-```
+- cd module:
+    - make        	    :to compile 
+    - insmod tty0tty.ko :to load module (using root or sudo)	
 
-Copy the new kernel module into the kernel modules directory
+### Install
 
-```
-sudo cp tty0tty.ko /lib/modules/$(uname -r)/kernel/drivers/misc/
-```
+- Copy the new kernel module into the kernel directory
 
-Load the module
-
-```
-sudo depmod
-sudo modprobe tty0tty
+```bash
+    # mkdir ./misc if it does not exist
+    $ sudo cp tty0tty.ko /lib/modules/$(uname -r)/drivers/misc/
 ```
 
-You should see new serial ports in ```/dev/``` (```ls /dev/tnt*```)
-Give appropriate permissions to the new serial ports
+- Load the module
 
-```
-sudo chmod 666 /dev/tnt*
-```
-
-You can now access the serial ports as /dev/tnt0 (1,2,3,4 etc) Note that the consecutive ports are interconnected. For example, /dev/tnt0 and /dev/tnt1 are connected as if using a direct cable.
-
-Persisting across boot:
-
-edit the file /etc/modules (Debian) or /etc/modules.conf
-
-```
-nano /etc/modules
-```
-and add the following line:
-
-```
-tty0tty
+```bash
+    sudo depmod
+    sudo modprobe tty0tty
 ```
 
-Note that this method will not make the module persist over kernel updates so if you ever update your kernel, make sure you build tty0tty again repeat the process.
+Now you should see serial ports in `/dev/tnt[0-9]` and give permissions to the new serial ports:
 
-## Debian package
-
-In order to build the dkms Debian package
-
-```
-sudo apt-get update && sudo apt-get install -y dh-make dkms build-essential
-debuild -uc -us
+```bash
+    $ sudo chmod 666 /dev/tnt*
 ```
 
-## Contact
+You can now access the serial ports. Note that the consecutive ports are interconnected. For example,
+`/dev/tnt0` and `/dev/tnt1` are connected as if using a direct cable.
 
-For e-mail suggestions :  lcgamboa@yahoo.com
+- Persisting across boot:
+
+```bash
+    $ echo "tty0tty" >> /etc/modules # namely, adding line tty0tty to the end of the file
+```
+
+- Add user to the dialout group to have permissions on the tty devices
+
+```bash
+    $ sudo usermod -a -G dialout $USER
+```
+
+### Note
+
+For any reason you want to build `dkms` package, run
+
+```bash
+    sudo apt-get update && sudo apt-get install -y dh-make dkms build-essential debuild -uc -us
+```
