@@ -1,33 +1,31 @@
-## tty0tty - linux null modem emulator
+## tty0tty - Linux Null Modem Emulator
 
 Originally forked from: https://github.com/freemed/tty0tty
 
-### tty0tty directory tree:
+## 1. tty0tty directory tree:
 
 ```bash
-    module    :linux kernel module null-modem
+    module  :linux kernel module null-modem
     pts	    :null-modem using ptys (without handshake lines)
 ```
 
-
 #### pts(unix98): 
 
-When run connect two pseudo-ttys and show the connection names:
-
 ```bash
+    # When run connect two pseudo-ttys and show the connection names:
     (/dev/pts/1) <=> (/dev/pts/2) 
 ```
 
-The connection is:
   
 ```bash
+    # The connection is:
     TX -> RX
     RX <- TX 	
 ```
 
 #### module:
 
-- The module is tested in kernel 4.19.0-10-amd64 (debian). When loaded, it creates 10 ttys interconnected (5 pairs):
+The module is tested in kernel 4.19.0-10-amd64 (debian). When loaded, it creates 10 (5 pairs) ttys:
 
 ```bash
     /dev/tnt0  <=>  /dev/tnt1 
@@ -37,7 +35,7 @@ The connection is:
     /dev/tnt8  <=>  /dev/tnt9 
 ```
 
-- The connection is:
+The connection is:
 
 ```bash
     TX   ->  RX
@@ -50,7 +48,7 @@ The connection is:
     DTR  ->  CD
 ```
   
-### Compile Requirements:
+## 2. Build Requirements:
 
 kernel-headers or kernel source is reqired, run following command to install:
 
@@ -59,34 +57,33 @@ kernel-headers or kernel source is reqired, run following command to install:
     $ sudo apt-get install linux-headers-$(uname -r)
 ```
 
-- then go to ./pts and ./module separately to run `make` to build
+Then go to ./pts and ./module separately to run `make` to build.
 
-### Compile/Build
+## 3. Compile/Build
 
-- cd pts:
-
-```bash
-    make        :to compile 
-    ./tty0tty   :to run 	
-```
-
-- cd module:
 
 ```bash
-    make        	        :to compile 
-    insmod tty0tty.ko       :to load module (using root or sudo)	
+    $ cd pts:
+    $ make        # to compile 
+    $ ./tty0tty   # to run 	
 ```
 
-### Install
+```bash
+    $ cd modules
+    $ make        	        # to compile 
+    $ insmod tty0tty.ko     # to load module (using root or sudo)	
+```
 
-- Copy the new kernel module into the kernel directory
+## 4. Install
+
+### 4.1 Copy the new kernel module into the kernel directory
 
 ```bash
     # mkdir ./misc if it does not exist
     $ sudo cp tty0tty.ko /lib/modules/$(uname -r)/drivers/misc/
 ```
 
-- Load the module
+### 4.2 Load the module
 
 ```bash
     sudo depmod
@@ -102,22 +99,22 @@ Now you should see serial ports in `/dev/tnt[0-9]` and give permissions to the n
 You can now access the serial ports. Note that the consecutive ports are interconnected. For example,
 `/dev/tnt0` and `/dev/tnt1` are connected as if using a direct cable.
 
-- Persisting across boot:
+### 4.3 Persisting across boot:
 
 ```bash
     $ echo "tty0tty" >> /etc/modules # namely, adding line tty0tty to the end of the file
 ```
 
-- Add user to the dialout group to have permissions on the tty devices
+### 4.4 Add user to the dialout group to have permissions on the tty devices
 
 ```bash
     $ sudo usermod -a -G dialout $USER
 ```
 
-### Note
+## Note
 
 For any reason you want to build `dkms` package, run
 
 ```bash
-    sudo apt-get update && sudo apt-get install -y dh-make dkms build-essential debuild -uc -us
+$ sudo apt-get update && sudo apt-get install -y dh-make dkms build-essential debuild -uc -us
 ```
