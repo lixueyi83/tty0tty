@@ -79,8 +79,8 @@ Then go to ./pts and ./module separately to run `make` to build.
 ### 4.1 Copy the new kernel module into the kernel directory
 
 ```bash
-    # mkdir ./misc if it does not exist
-    $ sudo cp tty0tty.ko /lib/modules/$(uname -r)/drivers/misc/
+    # mkdir ./misc if it does not exist under /lib/modules/4.19.0-10-amd64/kernel/
+    $ sudo cp tty0tty.ko /lib/modules/$(uname -r)/kernel/misc/  # sudo cp tty0tty.ko /lib/modules/4.19.0-10-amd64/kernel/misc/
 ```
 
 ### 4.2 Load the module
