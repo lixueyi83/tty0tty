@@ -71,7 +71,7 @@ Then go to ./pts and ./module separately to run `make` to build.
 ```bash
     $ cd modules
     $ make        	        # to compile 
-    $ insmod tty0tty.ko     # to load module (using root or sudo)	
+    $ insmod tty0tty.ko     # to load module (using root or sudo), or sudo rmmode tty0tty.ko to remote kernel module and then insmode.	
 ```
 
 ## 4. Install
