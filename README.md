@@ -110,18 +110,19 @@ You can now access the serial ports. Note that the consecutive ports are interco
 ```bash
     $ sudo usermod -aG dialout $USER
 ```
-
-user@debian:~$ ls -l /dev/tnt*
-crw-rw---- 1 root dialout 245, 0 Oct 20 00:51 /dev/tnt0
-crw-rw---- 1 root dialout 245, 1 Oct 20 00:51 /dev/tnt1
-crw-rw---- 1 root dialout 245, 2 Oct 20 00:51 /dev/tnt2
-crw-rw---- 1 root dialout 245, 3 Oct  7 03:42 /dev/tnt3
-crw-rw---- 1 root dialout 245, 4 Oct  7 03:42 /dev/tnt4
-crw-rw---- 1 root dialout 245, 5 Oct  7 03:42 /dev/tnt5
-crw-rw---- 1 root dialout 245, 6 Oct 20 00:51 /dev/tnt6
-crw-rw---- 1 root dialout 245, 7 Oct 20 00:51 /dev/tnt7
-crw-rw---- 1 root dialout 245, 8 Oct 20 01:06 /dev/tnt8
-crw-rw---- 1 root dialout 245, 9 Oct 20 01:06 /dev/tnt9
+```bashr
+    user@debian:~$ ls -l /dev/tnt*
+    crw-rw---- 1 root dialout 245, 0 Oct 20 00:51 /dev/tnt0
+    crw-rw---- 1 root dialout 245, 1 Oct 20 00:51 /dev/tnt1
+    crw-rw---- 1 root dialout 245, 2 Oct 20 00:51 /dev/tnt2
+    crw-rw---- 1 root dialout 245, 3 Oct  7 03:42 /dev/tnt3
+    crw-rw---- 1 root dialout 245, 4 Oct  7 03:42 /dev/tnt4
+    crw-rw---- 1 root dialout 245, 5 Oct  7 03:42 /dev/tnt5
+    crw-rw---- 1 root dialout 245, 6 Oct 20 00:51 /dev/tnt6
+    crw-rw---- 1 root dialout 245, 7 Oct 20 00:51 /dev/tnt7
+    crw-rw---- 1 root dialout 245, 8 Oct 20 01:06 /dev/tnt8
+    crw-rw---- 1 root dialout 245, 9 Oct 20 01:06 /dev/tnt9
+```
 
 If /dev/tnt* are within `root` group, use `sudo chgrp dialout /dev/tnt*` to change them to `dialout` group, and then add username to dialout group with above command.
 
