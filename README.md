@@ -108,7 +108,9 @@ You can now access the serial ports. Note that the consecutive ports are interco
 ### 4.4 Add user to the dialout group to have permissions on the tty devices
 
 ```bash
-    $ sudo usermod -aG dialout $USER
+    $ sudo chmod 666 /dev/tnt*          # give permissions to the new serial ports
+    $ sudo chgrp dialout /dev/tnt*      # change them to dailout group ff /dev/tnt* are within `root` group, 
+    $ sudo usermod -aG dialout $USER    # add username to dialout group
 ```
 ```bashr
     user@debian:~$ ls -l /dev/tnt*
@@ -123,8 +125,6 @@ You can now access the serial ports. Note that the consecutive ports are interco
     crw-rw---- 1 root dialout 245, 8 Oct 20 01:06 /dev/tnt8
     crw-rw---- 1 root dialout 245, 9 Oct 20 01:06 /dev/tnt9
 ```
-
-If /dev/tnt* are within `root` group, use `sudo chgrp dialout /dev/tnt*` to change them to `dialout` group, and then add username to dialout group with above command.
 
 ## Note
 
